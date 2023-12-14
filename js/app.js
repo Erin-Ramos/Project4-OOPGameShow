@@ -11,6 +11,5 @@ startBtn.addEventListener('click', () => {
     const game = new Game();
     game.gameReset();
     game.startGame();
-
-
+    console.log(game.missed);
 }); 

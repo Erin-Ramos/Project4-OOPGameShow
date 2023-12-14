@@ -11,7 +11,7 @@ class Game {
     }
 
     phrases() {
-        const phraseStrings = ['one test', 'two test', 'THREE test', 'four test', 'five test'];
+        const phraseStrings = ['Against all odds', 'Go for it', 'Be the change', 'Always add value', 'Action gets results'];
 
         const phrasesArray = phraseStrings.map((string) => new Phrase(string));
         return phrasesArray;
@@ -51,11 +51,11 @@ class Game {
         });
     }
     removeLife() { // TODO: This stops working on the second play through... So weird. 
+        // when i reset, the console tells me that this.missed is restarting at 0, but if you get one wrong, it picks up where it left off last game.
         const triesImg = document.querySelectorAll('.tries img');
-        console.log(triesImg);
         triesImg[this.missed].src = 'images/lostHeart.png';
 
-        this.missed += 1;
+        this.missed++;
 
         if (this.missed === 5) {
             this.gameOver('Bummer! Try again.', 'lose');
@@ -85,10 +85,13 @@ class Game {
             keys[i].classList = 'key';
         }
 
-        const resetTries = document.querySelectorAll('.tries img');
-        for(let j = 0; j < resetTries.length; j++) {
-            resetTries[j].src = 'images/liveHeart.png';
+        const triesImg = document.querySelectorAll('.tries img');
+        for(let j = 0; j < triesImg.length; j++) {
+            triesImg[j].src = 'images/liveHeart.png';
         }
 
     }
 }
+
+
+// TODO: clear out the old phrase. It is hanging on to all of them and allowing letters to be clicked as chosen that aren't in the current phrase
