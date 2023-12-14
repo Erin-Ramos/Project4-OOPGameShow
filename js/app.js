@@ -4,10 +4,13 @@
 
 
 
-const game = new Game();
 
 const startBtn = document.getElementById('btn__reset');
 
 startBtn.addEventListener('click', () => {
+    const game = new Game();
+    game.gameReset();
     game.startGame();
+
+
 }); 

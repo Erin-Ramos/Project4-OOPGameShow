@@ -6,17 +6,16 @@
 class Game {
     constructor() {
         this.missed = 0;
-        this.phrases = this.inputPhrases();
+        this.phrases = this.phrases();
         this.activePhrase = null;
     }
 
-    inputPhrases() {
+    phrases() {
         const phraseStrings = ['one test', 'two test', 'THREE test', 'four test', 'five test'];
 
         const phrasesArray = phraseStrings.map((string) => new Phrase(string));
         return phrasesArray;
-
-    };
+    }
 
     startGame() {
         const startOverlay = document.getElementById('overlay');
@@ -36,23 +35,60 @@ class Game {
 
         qwerty.addEventListener('click', (e) => {
             const clickedLetter = e.target.innerText;
+            const clickedBtn = e.target;
             this.activePhrase.checkLetter(clickedLetter);
-            /*
+
             if (clickedLetter === correctLetter) {
-                console.log('winner winner chicken dinner')
-                // TODO: figure out how to change the style of the correct/incorrect keys later. 
-                // just get the damn app functioning for now. 
-                // You literally wasted 3 hours. Move on. 
-            } */
+                clickedBtn.classList.add('chosen');
+                this.activePhrase.showMatchedLetter();
+
+            } else if (clickedBtn.className === 'key') {
+                clickedBtn.classList.add('wrong');
+                this.removeLife();
+                console.log(this.missed);
+            }
+            this.checkForWin();
         });
     }
-    removeLife() {
+    removeLife() { // TODO: This stops working on the second play through... So weird. 
+        const triesImg = document.querySelectorAll('.tries img');
+        console.log(triesImg);
+        triesImg[this.missed].src = 'images/lostHeart.png';
 
+        this.missed += 1;
+
+        if (this.missed === 5) {
+            this.gameOver('Bummer! Try again.', 'lose');
+        }
     }
     checkForWin() {
+        const phraseLi = document.querySelectorAll('.hide');
 
+        if (phraseLi.length === 0) {
+            this.gameOver('Congratulations! You won!', 'win');
+        }
     }
-    gameOver() {
+    gameOver(msg, result) {
+        const startOverlay = document.getElementById('overlay');
+        startOverlay.classList = (result);
+        startOverlay.style.visibility = 'visible';
+
+        const h1 = document.getElementById('game-over-message');
+        h1.innerText = msg;
+    }
+    gameReset() {
+        const phraseUl = document.querySelector('#phrase ul');
+        phraseUl.innerHTML = '';
+
+        const keys = document.querySelectorAll('.key');
+        for (let i = 0; i < keys.length; i++) {
+            keys[i].classList = 'key';
+        }
+
+        const resetTries = document.querySelectorAll('.tries img');
+        for(let j = 0; j < resetTries.length; j++) {
+            resetTries[j].src = 'images/liveHeart.png';
+        }
 
     }
 }
