@@ -9,17 +9,16 @@
  */
 class Game {
     constructor() {
+        const phrase1 = new Phrase('Against all odds');
+        const phrase2 = new Phrase('Go for it');
+        const phrase3 = new Phrase('Be the change');
+        const phrase4 = new Phrase('Always add value');
+        const phrase5 = new Phrase('Action gets results')
+        const phrases = [phrase1, phrase2, phrase3, phrase4, phrase5];
+
         this.missed = 0;
-        this.phrases = this.phrases();
+        this.phrases = phrases; 
         this.activePhrase = null;
-    }
-
-    // create the array that holds the phrase strings
-    phrases() {
-        const phraseStrings = ['Against all odds', 'Go for it', 'Be the change', 'Always add value', 'Action gets results'];
-
-        const phrasesArray = phraseStrings.map((string) => new Phrase(string));
-        return phrasesArray;
     }
 
     // remove the start screen overlay and run the methods needed to begin the game 
@@ -51,11 +50,13 @@ class Game {
             // if the letter clicked by the player matches a letter in the phrase, change the key to the chosen class and show the matched letter
             if (clickedLetter === correctLetter) {
                 clickedBtn.classList.add('chosen');
+                clickedBtn.disabled = true;
                 this.activePhrase.showMatchedLetter();
 
             // if the letter clicked by the player does not match a letter in the phrase, change the key to the wrong class and remove a life
             } else if (clickedBtn.className === 'key') {
                 clickedBtn.classList.add('wrong');
+                clickedBtn.disabled = true;
                 this.removeLife();
             }
             // check if the player has won
@@ -69,8 +70,7 @@ class Game {
         triesImg[this.missed].src = 'images/lostHeart.png';
 
         // increase the missed counter
-        this.missed++;
-
+        this.missed += 1;
         if (this.missed === 5) {
             this.gameOver('Bummer! Try again.', 'lose');
         }
@@ -93,5 +93,27 @@ class Game {
 
         const h1 = document.getElementById('game-over-message');
         h1.innerText = msg;
+    }
+
+    resetGame() {
+        // clear out the previous phrase
+        const phraseUl = document.querySelector('#phrase ul');
+        phraseUl.innerHTML = '';
+    
+        // remove chosen/wrong classes from keys and enable them
+        const keys = document.querySelectorAll('.key');
+        for (let i = 0; i < keys.length; i++) {
+            keys[i].classList = 'key';
+            keys[i].disabled = false;
+        }
+    
+        // restore hearts
+        const triesImg = document.querySelectorAll('.tries img');
+        for(let j = 0; j < triesImg.length; j++) {
+            triesImg[j].src = 'images/liveHeart.png';
+        }
+    
+        // reset missed counter to 0;
+        this.missed = 0;
     }
 }

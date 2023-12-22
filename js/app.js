@@ -3,26 +3,20 @@
  * app.js */
 
 
+/** Final Issue: 
+ * initialising the game variable with a new Game object outside of the event handler, 
+ * so the event handler just re-calls the startGame method on the same class instance of the Game class. 
+ * instead need to make the variable create a new instance of the class. 
+ * BUT - when I do this, the game does not reset properly. */
+
 
 const game = new Game();
 const startBtn = document.getElementById('btn__reset');
 
 // reset the game and then start the game when the start game button is clicked
 startBtn.addEventListener('click', () => {
-    const phraseUl = document.querySelector('#phrase ul');
-    phraseUl.innerHTML = '';
-
-    const keys = document.querySelectorAll('.key');
-    for (let i = 0; i < keys.length; i++) {
-        keys[i].classList = 'key';
-    }
-
-    const triesImg = document.querySelectorAll('.tries img');
-    for(let j = 0; j < triesImg.length; j++) {
-        triesImg[j].src = 'images/liveHeart.png';
-    }
-
-    game.missed = 0;
-
+    game.resetGame();
     game.startGame();
 }); 
+
+
