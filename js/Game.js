@@ -48,6 +48,11 @@ class Game {
             clickedBtn.classList.add('chosen');
             clickedBtn.disabled = true;
             this.activePhrase.showMatchedLetter();
+            // check if the player has won
+            if (this.checkForWin()) {
+                // if checkForWin is true, run gameOver with the win message and class
+                this.gameOver('Congratulations! You won!', 'win');
+            }
 
         // if the letter clicked by the player does not match a letter in the phrase, change the key to the wrong class and remove a life
         } else {
@@ -55,8 +60,6 @@ class Game {
             clickedBtn.disabled = true;
             this.removeLife();
         }
-        // check if the player has won
-        this.checkForWin();
 
     }
 
@@ -77,10 +80,11 @@ class Game {
     checkForWin() {
         const phraseLi = document.querySelectorAll('.hide');
 
-        // if player has finished the phrase, run gameOver with the win message and class
+        // if player has finished the phrase, return true 
         if (phraseLi.length === 0) {
-            this.gameOver('Congratulations! You won!', 'win');
+            return true;
         }
+
     }
 
     // when the game is over, display the correct screen - either win or lose 
